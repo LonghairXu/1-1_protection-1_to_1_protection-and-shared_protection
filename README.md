@@ -1,37 +1,46 @@
-Next-generation optical transport networks require robust protection schemes to ensure uninterrupted service in case of fiber cuts or node failures. This repository contains reference implementations of:
+# 1+1, 1:1 & Shared Protection
 
-1. 1+1, 1:1 Protection: Each working path has a dedicated protection path; switchover occurs immediately upon fault detection.
+Reference implementations of three routing-and-spectrum-allocation (RSA) protection schemes for elastic optical networks, plus helper scripts for proactive path monitoring and topology visualization.
 
-2. Shared Protection: Multiple working paths share a pool of protection resources; only one protection path is used at a time if a fault occurs.
+---
 
-Specify any language versions, libraries, or tools required. For example:
+## Features
 
-Python 3.8 or higher
+- **Protection Schemes**  
+  - **1+1 Protection**: Primary and backup paths carry traffic simultaneously; immediate switchover on failure.  
+  - **1:1 Protection**: Backup path reserved; traffic switches over only when primary fails.  
+  - **Shared Protection**: Multiple demands share a common backup resource.
 
-NetworkX (for topology modeling)
+- **Core Functions (`function.py`)**  
+  - Load a JSON‐formatted topology (NetworkX).  
+  - Generate random traffic demands.  
+  - Compute up to *k* edge‐disjoint paths.  
+  - First-Fit RSA for each protection scheme.  
+  - Spectrum management (clear/occupy/release slots).  
+  - Transponder counting and savings calculation.
 
-PyTest (for running automated tests)
+- **Proactive Monitoring (`run_function.py`)**  
+  - Periodically test primary path Packet Loss Ratio (PLR).  
+  - Automatic switchover to backup if PLR exceeds a threshold.
 
-(Optional) gRPC or REST frameworks if integrating with external control planes
+- **Topology Visualization (`topology_show.py`)**  
+  - Draws a directed graph from `IT_21.json` using NetworkX + Matplotlib.
 
-Make or GNU Makefiles (if you provide Make targets)
+---
 
-Project Structure
-├── configs/
-│   ├── topology_mesh.json
-│   ├── topology_ring.json
-│   ├── working_path_A.json
-│   ├── working_path_B.json
-│   └── shared_pool.json
-├── examples/
-│   ├── demo_1to1_protection.py
-│   └── demo_shared_protection.py
-├── protection/
-│   ├── __init__.py
-│   ├── base.py               # Common abstractions (Topology, Path, FaultInjector)
-│   ├── protection_1to1.py     # 1:1 protection implementation
-│   └── protection_shared.py   # Shared protection implementation
-├── tests/
-│   ├── test_1to1.py
-│   └── test_shared.py
-└── README.md                 # ← You are here
+## Prerequisites
+
+- Python 3.7+  
+- [NetworkX](https://networkx.org/) (2.x)  
+- [Matplotlib](https://matplotlib.org/) (for topology visualization)
+
+---
+
+## Installation
+
+```bash
+git clone https://github.com/LonghairXu/1-1_protection-1_to_1_protection-and-shared_protection.git
+cd 1-1_protection-1_to_1_protection-and-shared_protection
+python3 -m venv venv
+source venv/bin/activate         # (Windows: venv\Scripts\activate.bat)
+pip install networkx matplotlib
